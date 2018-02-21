@@ -2,38 +2,41 @@ public interface Cache<K,V>{
 	/*
 	This interface specificies basic functionality of any cache data structure.
 	It exists to allow for different caching strategies, like LRU, MRU, etc. to
-	be used and built as per the user's preference.
+	be used and built as per the user's preference. Additionally, the n-way set
+	associative cache itself will implement this interface.
 
-	Aditionally, all classes implementing Cache should include a constructor with
-	the following signature:
-
-	public IMPLEMENTING_CLASS(int capacity)
-
-	where capacity signifies the largest allowable number of pairs to be contained
-	in the cache.
 	*/
 
-	public int size();
 	/*
 	Returns the current number of key value pairs contained in the cache
 	*/
+	public int size();
 
-	public boolean containsKey(K key);
 	/*
 	Returns true if key is associated with a value in the cache, and false if not
 	*/
+	public boolean containsKey(K key);
 
-
-	public V get(K key);
 	/*
 	Returns value associated with input key
 	*/
+	public V get(K key);
 
-	public void put(K key, V value);
 	/*
 	Associates key value pair into cache
 	*/
+	public void put(K key, V value);
 
-	//caches should be able to remove too. Come on dude.
+	/*
+	Removes key value pair associated with key
+	*/
+	public void remove(K key);
+
+
+	/*
+	ADD THIS IN SOON
+	Clears contents of the cache
+	public void clear();
+	*/
 
 }
