@@ -1,3 +1,5 @@
+package nwaysetcache;
+
 import java.util.*;
 public class LRUCache<K,V> implements Cache<K,V>{
 
@@ -52,6 +54,11 @@ public class LRUCache<K,V> implements Cache<K,V>{
 	@Override
 	public void remove(K key){
 		map.remove(key);
+	}
+
+	@Override
+	public void clear(){
+		map.clear();
 	}
 
 }

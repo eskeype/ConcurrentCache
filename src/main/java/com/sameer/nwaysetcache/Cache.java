@@ -1,3 +1,5 @@
+package nwaysetcache;
+
 public interface Cache<K,V>{
 	/*
 	This interface specificies basic functionality of any cache data structure.
@@ -34,9 +36,8 @@ public interface Cache<K,V>{
 
 
 	/*
-	ADD THIS IN SOON
 	Clears contents of the cache
-	public void clear();
 	*/
+	public void clear();
 
 }

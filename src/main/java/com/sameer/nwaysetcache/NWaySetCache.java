@@ -1,3 +1,5 @@
+package nwaysetcache;
+
 import java.util.*;
 public class NWaySetCache<K, V> implements Cache<K,V>{
 	
@@ -16,9 +18,9 @@ public class NWaySetCache<K, V> implements Cache<K,V>{
 	}
 
 	private int getIndex(K key){
-		if (key.hashCode()<0)
-			return (key.hashCode() % subcaches.size()) + subcaches.size();
-		return key.hashCode() % subcaches.size();
+		int hashModSize = key.hashCode() % subcaches.size();
+		//second term ensures that output is a valid positive integer
+		return hashModSize + (hashModSize < 0 ? subcaches.size() : 0 );
 	}
 
 	protected Cache<K,V> createSubCache(int subcapacity){
@@ -54,9 +56,12 @@ public class NWaySetCache<K, V> implements Cache<K,V>{
 	*/
 	@Override
 	public void put(K key, V value){
-		if(!containsKey(key))
-			size++;
+
+		int oldSize = subcaches.get(getIndex(key)).size();
+
 		subcaches.get(getIndex(key)).put(key, value);
+
+		size += subcaches.get(getIndex(key)).size() - oldSize;
 	}
 
 	/*
@@ -64,8 +69,19 @@ public class NWaySetCache<K, V> implements Cache<K,V>{
 	*/
 	@Override
 	public void remove(K key){
-		if(containsKey(key))
-			size--;
+
+		int oldSize = subcaches.get(getIndex(key)).size();
+
 		subcaches.get(getIndex(key)).remove(key);
+		
+		size += subcaches.get(getIndex(key)).size() - oldSize;
+	}
+
+	@Override
+	public void clear(){
+		for(Cache<K,V> subcache : subcaches){
+			subcache.clear();
+		}
+		size = 0;
 	}
 }
