@@ -59,7 +59,7 @@ public class NWaySetCacheTest {
   }
 
   @Test
-  public void overrideLRUCache(){
+  public void overrideWithEvictor(){
   	NWaySetCache<Integer, Integer> lru = new NWaySetCache<Integer,Integer>(1,2);
 
   	lru.put(1,1);
@@ -73,10 +73,10 @@ public class NWaySetCacheTest {
 
   	NWaySetCache<Integer, Integer> mru = new NWaySetCache<Integer, Integer>(1,2){
   		@Override	
-  		protected Cache<Integer, Integer> createSubCache(int subcapacity){
-			return new MRUCache<Integer, Integer>(subcapacity);
-		}
-  	};
+  		protected Evictor<Integer> createEvictor(){
+        return new MRUEvictor<Integer>();
+		  }
+    };
 
   	mru.put(1,1);
   	mru.put(2,2);
@@ -88,5 +88,39 @@ public class NWaySetCacheTest {
   	assertTrue(mru.containsKey(3));
   }
 
+  @Test
+  public void overrideWithCache(){
+
+    NWaySetCache<Integer,Integer> evictLeast = new NWaySetCache<Integer,Integer>(1,2){
+      @Override
+      protected Cache<Integer,Integer> createSubCache(int subcapacity){
+        return new EvictorCache<Integer,Integer>(subcapacity, new LeastEvictor<Integer>());
+      }
+
+    };
+    
+    evictLeast.put(1,1);
+    evictLeast.put(3,3);
+    evictLeast.put(2,2);
+
+    assertTrue(evictLeast.size() == 2);
+    assertTrue(!evictLeast.containsKey(1));
+    assertTrue(evictLeast.containsKey(2));
+    assertTrue(evictLeast.containsKey(3));
+
+    evictLeast.put(0,0);
+
+    assertTrue(evictLeast.size() == 2);
+    assertTrue(evictLeast.containsKey(0));
+    assertTrue(!evictLeast.containsKey(2));
+    assertTrue(evictLeast.containsKey(3));
+
+    evictLeast.put(4,4);
+
+    assertTrue(evictLeast.size() == 2);
+    assertTrue(!evictLeast.containsKey(0));
+    assertTrue(evictLeast.containsKey(3));
+    assertTrue(evictLeast.containsKey(4));
+  }
 
 }

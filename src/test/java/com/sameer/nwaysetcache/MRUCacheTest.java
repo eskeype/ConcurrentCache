@@ -1,11 +1,11 @@
 import static org.junit.Assert.*;
 import org.junit.Test;
-import nwaysetcache.MRUCache;
+import nwaysetcache.*;
 
 public class MRUCacheTest {
   @Test
   public void deletesLastAdded() {
-    MRUCache<Integer,Integer> mru = new MRUCache<>(2);
+    EvictorCache<Integer,Integer> mru = new EvictorCache<>(2, new MRUEvictor<>());
     mru.put(1,1);
     mru.put(2,2);
     mru.put(3,3);
@@ -18,7 +18,7 @@ public class MRUCacheTest {
 
   @Test
   public void deletesLastAccessed() {
-  	MRUCache<Integer,Integer> mru = new MRUCache<>(2);
+    EvictorCache<Integer,Integer> mru = new EvictorCache<>(2, new MRUEvictor<>());
   	mru.put(1,1);
   	mru.put(2,2);
   	mru.get(1);
@@ -33,7 +33,7 @@ public class MRUCacheTest {
 
   @Test
   public void containsKeyDoesntChangeAccessOrder() {
-    MRUCache<Integer,Integer> mru = new MRUCache<>(2);
+    EvictorCache<Integer,Integer> mru = new EvictorCache<>(2, new MRUEvictor<>());
     mru.put(1,1);
     mru.put(2,2);
 
@@ -50,7 +50,7 @@ public class MRUCacheTest {
 
   @Test
   public void removalAndReassignment() {
-    MRUCache<Integer,Integer> mru = new MRUCache<>(2);
+    EvictorCache<Integer,Integer> mru = new EvictorCache<>(2, new MRUEvictor<>());
     mru.put(1,1);
     mru.put(2,2);
     mru.put(1,-1);

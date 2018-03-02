@@ -1,11 +1,11 @@
 import static org.junit.Assert.*;
 import org.junit.Test;
-import nwaysetcache.LRUCache;
+import nwaysetcache.*;
 
 public class LRUCacheTest {
   @Test
   public void deletesEarliestAdded() {
-    LRUCache<Integer,Integer> lru = new LRUCache<>(2);
+    EvictorCache<Integer,Integer> lru = new EvictorCache<Integer,Integer>(2, new LRUEvictor<Integer>());
     lru.put(1,1);
     lru.put(2,2);
     lru.put(3,3);
@@ -18,7 +18,7 @@ public class LRUCacheTest {
 
   @Test
   public void deletesLeastRecentlyAccessed() {
-  	LRUCache<Integer,Integer> lru = new LRUCache<>(2);
+  	EvictorCache<Integer,Integer> lru = new EvictorCache<Integer,Integer>(2, new LRUEvictor<Integer>());
   	lru.put(1,1);
   	lru.put(2,2);
   	lru.get(1);
@@ -33,7 +33,7 @@ public class LRUCacheTest {
 
   @Test
   public void containsKeyDoesntChangeAccessOrder() {
-    LRUCache<Integer,Integer> lru = new LRUCache<>(2);
+    EvictorCache<Integer,Integer> lru = new EvictorCache<Integer,Integer>(2, new LRUEvictor<Integer>());
     lru.put(1,1);
     lru.put(2,2);
 
@@ -50,7 +50,7 @@ public class LRUCacheTest {
 
   @Test
   public void removalAndReassignment() {
-    LRUCache<Integer,Integer> lru = new LRUCache<>(2);
+    EvictorCache<Integer,Integer> lru = new EvictorCache<Integer,Integer>(2, new LRUEvictor<Integer>());
     lru.put(1,1);
     lru.put(2,2);
     lru.put(1,-1);

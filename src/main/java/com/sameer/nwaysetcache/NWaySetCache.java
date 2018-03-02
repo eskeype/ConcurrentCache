@@ -24,7 +24,11 @@ public class NWaySetCache<K, V> implements Cache<K,V>{
 	}
 
 	protected Cache<K,V> createSubCache(int subcapacity){
-		return new LRUCache<K,V>(subcapacity);
+		return new EvictorCache<K,V>(subcapacity, createEvictor());
+	}
+
+	protected Evictor<K> createEvictor(){
+		return new LRUEvictor<K>();
 	}
 
 	/*
