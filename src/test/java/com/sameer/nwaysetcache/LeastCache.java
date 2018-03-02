@@ -1,27 +1,18 @@
-package nwaysetcache;
-
+import nwaysetcache.*;
 import java.util.*;
 
-public class EvictorCache<K,V> implements Cache<K,V>{
-
-
+public class LeastCache<K,V> implements Cache<K,V>{
 	/*
-	This class implements Cache using a custom Evictor. Any time a change is made
-	to the EvictorCache, the corresponding information is passed to the EvictorCache.
-
-	When the EvictorCache needs to evict a key, the cache queries its Evictor's
-	chooseEvict method to dermine which key to evict.
+	An example cache that evicts the least key according to natural order when
+	the cache exceeds capacity
 	*/
 
-	Evictor<K> evictor;
-	HashMap<K,V> map;
-	int capacity;
+	private int capacity;
+	private TreeMap<K,V> map;
 
-	public EvictorCache(int capacity, Evictor<K> evictor)
-	{
-		map = new HashMap<>();
-		this.evictor = evictor;
+	public LeastCache(int capacity){
 		this.capacity = capacity;
+		map = new TreeMap<K,V>();
 	}
 
 	/*
@@ -45,7 +36,6 @@ public class EvictorCache<K,V> implements Cache<K,V>{
 	*/
 	@Override
 	public V get(K key){
-		evictor.keyAccessed(key);
 		return map.get(key);
 	}
 
@@ -54,11 +44,10 @@ public class EvictorCache<K,V> implements Cache<K,V>{
 	*/
 	@Override
 	public void put(K key, V value){
-		if(!map.containsKey(key) && capacity == map.size()){
-			map.remove(evictor.chooseEvict());
+		if(map.size() == capacity){
+			map.pollFirstEntry();
 		}
 		map.put(key,value);
-		evictor.keyAdded(key);
 	}
 
 	/*
@@ -67,7 +56,6 @@ public class EvictorCache<K,V> implements Cache<K,V>{
 	@Override
 	public void remove(K key){
 		map.remove(key);
-		evictor.keyRemoved(key);
 	}
 
 
@@ -76,7 +64,7 @@ public class EvictorCache<K,V> implements Cache<K,V>{
 	*/
 	@Override
 	public void clear(){
-		evictor.cacheCleared();
 		map.clear();
 	}
+
 }

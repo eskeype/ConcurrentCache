@@ -94,11 +94,13 @@ public class NWaySetCacheTest {
     NWaySetCache<Integer,Integer> evictLeast = new NWaySetCache<Integer,Integer>(1,2){
       @Override
       protected Cache<Integer,Integer> createSubCache(int subcapacity){
-        return new EvictorCache<Integer,Integer>(subcapacity, new LeastEvictor<Integer>());
+        return new LeastCache<Integer,Integer>(subcapacity);
       }
 
     };
-    
+
+    //this tests the behavior of the Least cache
+
     evictLeast.put(1,1);
     evictLeast.put(3,3);
     evictLeast.put(2,2);

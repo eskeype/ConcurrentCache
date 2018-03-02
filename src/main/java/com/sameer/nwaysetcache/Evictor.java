@@ -26,7 +26,7 @@ public interface Evictor<K>{
 	public void keyAccessed(K key);
 
 	/*
-	Will be called when a key is removed from the cache
+	Will be called when a key is removed from the cache. Should do nothing if key is not in cache
 	*/
 	public void keyRemoved(K key);
 

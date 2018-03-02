@@ -30,7 +30,7 @@ public interface Cache<K,V>{
 	public void put(K key, V value);
 
 	/*
-	Removes key value pair associated with key
+	Removes key value pair associated with key if key exists
 	*/
 	public void remove(K key);
 
