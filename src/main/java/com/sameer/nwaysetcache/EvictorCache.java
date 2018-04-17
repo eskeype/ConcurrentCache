@@ -13,9 +13,9 @@ public class EvictorCache<K,V> implements Cache<K,V>{
 	chooseEvict method to dermine which key to evict.
 	*/
 
-	Evictor<K> evictor;
-	HashMap<K,V> map;
-	int capacity;
+	private Evictor<K> evictor;
+	private HashMap<K,V> map;
+	private int capacity;
 
 	public EvictorCache(int capacity, Evictor<K> evictor)
 	{
@@ -44,7 +44,7 @@ public class EvictorCache<K,V> implements Cache<K,V>{
 	Returns value associated with input key
 	*/
 	@Override
-	public V get(K key){
+	public synchronized V get(K key){
 		evictor.keyAccessed(key);
 		return map.get(key);
 	}
@@ -53,7 +53,7 @@ public class EvictorCache<K,V> implements Cache<K,V>{
 	Associates key value pair into cache
 	*/
 	@Override
-	public void put(K key, V value){
+	public synchronized void put(K key, V value){
 		if(!map.containsKey(key) && capacity == map.size()){
 			map.remove(evictor.chooseEvict());
 		}
@@ -65,7 +65,7 @@ public class EvictorCache<K,V> implements Cache<K,V>{
 	Removes key value pair associated with key if key exists
 	*/
 	@Override
-	public void remove(K key){
+	public synchronized void remove(K key){
 		map.remove(key);
 		evictor.keyRemoved(key);
 	}
@@ -75,7 +75,7 @@ public class EvictorCache<K,V> implements Cache<K,V>{
 	Clears contents of the cache
 	*/
 	@Override
-	public void clear(){
+	public synchronized void clear(){
 		evictor.cacheCleared();
 		map.clear();
 	}
