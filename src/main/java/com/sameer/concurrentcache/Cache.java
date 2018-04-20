@@ -1,4 +1,4 @@
-package nwaysetcache;
+package concurrentcache;
 
 public interface Cache<K,V>{
 	/*

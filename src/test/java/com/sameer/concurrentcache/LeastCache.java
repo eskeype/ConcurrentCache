@@ -1,4 +1,4 @@
-import nwaysetcache.*;
+import concurrentcache.*;
 import java.util.*;
 
 public class LeastCache<K,V> implements Cache<K,V>{

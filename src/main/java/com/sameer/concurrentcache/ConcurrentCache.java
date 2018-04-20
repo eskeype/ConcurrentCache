@@ -1,12 +1,12 @@
-package nwaysetcache;
+package concurrentcache;
 
 import java.util.*;
-public class NWaySetCache<K, V> implements Cache<K,V>{
+public class ConcurrentCache<K, V> implements Cache<K,V>{
 	
 	private int size;
 	private ArrayList<Cache<K,V>> subcaches;
 
-	public NWaySetCache(int n, int subcapacity){
+	public ConcurrentCache(int n, int subcapacity){
 
 		this.size = 0;
 		subcaches = new ArrayList<Cache<K,V>>(n);

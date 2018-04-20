@@ -1,4 +1,4 @@
-package nwaysetcache;
+package concurrentcache;
 
 import java.util.*;
 public class LRUEvictor<K> implements Evictor<K>{

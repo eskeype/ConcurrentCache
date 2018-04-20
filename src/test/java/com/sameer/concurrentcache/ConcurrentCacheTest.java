@@ -1,11 +1,11 @@
 import static org.junit.Assert.*;
 import org.junit.Test;
-import nwaysetcache.*;
+import concurrentcache.*;
 
-public class NWaySetCacheTest {
+public class ConcurrentCacheTest {
   @Test
   public void putAndGet() {
-  	NWaySetCache<Integer, Integer> cache = new NWaySetCache<>(3,3);
+  	ConcurrentCache<Integer, Integer> cache = new ConcurrentCache<>(3,3);
 
   	cache.put(1,1);
   	cache.put(2,2);
@@ -19,7 +19,7 @@ public class NWaySetCacheTest {
 
   @Test
   public void overWrite() {
-  	NWaySetCache<Integer, Integer> cache = new NWaySetCache<>(3,3);
+  	ConcurrentCache<Integer, Integer> cache = new ConcurrentCache<>(3,3);
   	cache.put(1,1);
   	cache.put(2,2);
   	cache.put(3,3);
@@ -35,7 +35,7 @@ public class NWaySetCacheTest {
 
   @Test
   public void replacesWithinSet(){
-  	NWaySetCache<Integer, Integer> cache = new NWaySetCache<>(3,1);
+  	ConcurrentCache<Integer, Integer> cache = new ConcurrentCache<>(3,1);
   	cache.put(0,0);
   	cache.put(3,3);
 
@@ -60,7 +60,7 @@ public class NWaySetCacheTest {
 
   @Test
   public void overrideWithEvictor(){
-  	NWaySetCache<Integer, Integer> lru = new NWaySetCache<Integer,Integer>(1,2);
+  	ConcurrentCache<Integer, Integer> lru = new ConcurrentCache<Integer,Integer>(1,2);
 
   	lru.put(1,1);
   	lru.put(2,2);
@@ -71,7 +71,7 @@ public class NWaySetCacheTest {
   	assertTrue(lru.containsKey(2));
   	assertTrue(lru.containsKey(3));
 
-  	NWaySetCache<Integer, Integer> mru = new NWaySetCache<Integer, Integer>(1,2){
+  	ConcurrentCache<Integer, Integer> mru = new ConcurrentCache<Integer, Integer>(1,2){
   		@Override	
   		protected Evictor<Integer> createEvictor(){
         return new MRUEvictor<Integer>();
@@ -91,7 +91,7 @@ public class NWaySetCacheTest {
   @Test
   public void overrideWithCache(){
 
-    NWaySetCache<Integer,Integer> evictLeast = new NWaySetCache<Integer,Integer>(1,2){
+    ConcurrentCache<Integer,Integer> evictLeast = new ConcurrentCache<Integer,Integer>(1,2){
       @Override
       protected Cache<Integer,Integer> createSubCache(int subcapacity){
         return new LeastCache<Integer,Integer>(subcapacity);

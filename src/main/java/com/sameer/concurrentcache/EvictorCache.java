@@ -1,4 +1,4 @@
-package nwaysetcache;
+package concurrentcache;
 
 import java.util.*;
 
