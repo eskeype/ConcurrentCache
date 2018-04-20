@@ -8,9 +8,9 @@ Several of the popular caching policies, including LRU and LFU, can be implement
 
 ## Implementation Details
 
-This is done using a tiered approach. The ConcurrentCache will contain a list of N (specified by the user) subcaches, each with their own capacities. Each subcache will employ a particular cache replacement policy (LRU, by default). Users can design their own cache replacement policies using the Evictor interface or the Cache interface (see documentation). Key/value pairs will be mapped in to a particular subcache according to the hashcode of the key. Each subcache is locked for reads and writes, to allow for efficient implementations of various replacement algorithms, but the ConcurrentCache will not be locked for reads and writes.
+This cache was implemented using a tiered approach. The ConcurrentCache will contain a list of N (specified by the user) subcaches, each with their own capacities. Each subcache will employ a particular cache replacement policy (LRU, by default). Users can design their own cache replacement policies using the Evictor interface or the Cache interface (see documentation). Key/value pairs will be mapped in to a particular subcache according to the hashcode of the key. Each subcache is locked for reads and writes, to allow for efficient implementations of various replacement algorithms, but the entire ConcurrentCache will not be locked for reads and writes.
 
-So, in a sense, this implementation is meant to be a compromise that allows for effective replacement strategies to be utilized in some way, while avoiding a sequential bottleneck for cache usage.
+So, in a sense, this implementation is meant to be a compromise that allows for effective replacement strategies to be utilized in some way, while avoiding a sequential bottleneck for all cache reads and writes.
 
 
 ## Build
