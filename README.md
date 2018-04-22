@@ -2,7 +2,7 @@
 
 This is an implementation of a key/value cache designed for concurrency and user configuration
 
-Traditional caches are commonly designed to employ popular key replacement policies, such as LRU, MRU, LFU, etc. Certain cacheing policies are favored in some situations, but are considered suboptimal in others - Caches that use the LRU policy are used by operating systems for page replacement, and a variety of other tasks, but according to some exxperts, "When a file is being repeatedly scanned in a [Looping Sequential] reference pattern, MRU is the best replacement algorithm."
+Traditional caches are commonly designed to employ popular key replacement policies, such as LRU, MRU, LFU, etc. Certain cacheing policies are favored in some situations, but are considered suboptimal in others - Caches that use the LRU policy are used by operating systems for page replacement, and a variety of other tasks, but according to some exxperts, "When a file is being repeatedly scanned in a [Looping Sequential] reference pattern, MRU is the best replacement algorithm." ([source](http://www.vldb.org/conf/1985/P127.PDF))
 
 Several of the popular caching policies, including LRU and LFU, can be implemented very efficiently, but in a way that requires the caches to be locked for all reads and writes. This cache aims to allow for users to employ their own cache replacement strategies, while allowing for concurrent cache writing and access in some cases.
 
